@@ -1,0 +1,45 @@
+Project: BADASS Part 3 - BGP EVPN with VXLAN
+Login: ktakamat
+
+[Overview]
+This project implements a modern Data Center network architecture using BGP EVPN (RFC 7432) and VXLAN.
+It simulates a Spine-Leaf topology where routers automatically exchange host information (MAC addresses) using BGP, allowing hosts to communicate over a VXLAN overlay.
+
+[Topology]
+- Architecture: Spine-Leaf (1 Spine, 3 Leafs)
+- Spine: router-ktakamat-1 (Route Reflector)
+- Leafs: router-ktakamat-2, 3, 4 (VTEPs)
+- Hosts: host-ktakamat-1, 2, 3 (All in 20.1.1.0/24 subnet)
+
+[Technologies Used]
+- Underlay: OSPF (for IP reachability between Loopback interfaces)
+- Overlay Control Plane: iBGP with EVPN address family
+- Overlay Data Plane: VXLAN (VNI 10)
+- BGP Role: Route Reflector (RR) on Spine to simplify peering
+
+[Configuration Method]
+Configuration is fully automated using shell scripts.
+- The `exec_confs.sh` script detects running containers and injects the corresponding configuration script.
+- MTU is adjusted to 1450 on VXLAN interfaces to prevent packet drops due to encapsulation overhead.
+
+[Files Description]
+- badass_part3.gns3project: The GNS3 project file.
+- exec_confs.sh: Automation script.
+- router-ktakamat-1: Config for Spine (BGP RR, Dynamic Neighbor, OSPF).
+- router-ktakamat-2/3/4: Config for Leafs (VXLAN setup, BGP Client, Advertise all VNI).
+- host-ktakamat-1/2/3: Config for Hosts.
+- Dockerfile.*: Docker build files (Same as Part 1/2).
+
+[How to Run]
+1. Open the .gns3project file in GNS3.
+2. Start all nodes.
+3. Open a terminal in this folder.
+4. Run the configuration script:
+   $ chmod +x exec_confs.sh
+   $ ./exec_confs.sh
+5. Verify BGP session (Optional):
+   (On router-1 console)
+   # vtysh -c "show bgp l2vpn evpn summary"
+6. Verify Connectivity:
+   (On host-1 console)
+   # ping 20.1.1.2
