@@ -1,0 +1,21 @@
+FROM alpine:latest
+
+RUN apk update && apk add --no-cache \
+    frr \
+    busybox-extras \
+    iproute2 \
+    iputils \
+    bash \
+    tcpdump \
+    vim
+
+RUN mkdir -p /etc/frr && \
+    touch /etc/frr/vtysh.conf
+
+COPY daemons /etc/frr/daemons
+COPY start-router.sh /usr/bin/start-router.sh
+
+RUN chown -R frr:frr /etc/frr && \
+    chmod +x /usr/bin/start-router.sh
+
+ENTRYPOINT ["/usr/bin/start-router.sh"]

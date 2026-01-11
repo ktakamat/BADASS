@@ -1,0 +1,15 @@
+FROM alpine:latest
+
+RUN apk update && apk add --no-cache \
+    busybox-extras \
+    iproute2 \
+    iputils \
+    bash \
+    tcpdump \
+    vim
+
+COPY start-host.sh /usr/bin/start-host.sh
+
+RUN chmod +x /usr/bin/start-host.sh
+
+ENTRYPOINT ["/usr/bin/start-host.sh"]

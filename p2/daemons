@@ -1,0 +1,7 @@
+zebra=yes
+bgpd=yes
+ospfd=yes
+isisd=yes
+
+vtysh_enable=yes
+watchfrr_options=""
