@@ -37,9 +37,9 @@ Configuration is fully automated using shell scripts.
 4. Run the configuration script:
    $ chmod +x exec_confs.sh
    $ ./exec_confs.sh
-5. Verify BGP session (Optional):
+6. Verify BGP session (Optional):
    (On router-1 console)
-   # vtysh -c "show bgp l2vpn evpn summary"
-6. Verify Connectivity:
+   vtysh -c "show bgp l2vpn evpn summary"
+7. Verify Connectivity:
    (On host-1 console)
-   # ping 20.1.1.2
+   ping 20.1.1.2
